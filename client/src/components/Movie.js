@@ -5,10 +5,12 @@ import { gql } from "apollo-boost";
 import { useMutation } from "@apollo/react-hooks";
 
 const LIKE_MOVIE = gql`
-  mutation likeMovie($id: Int!){
-    likeMovie(id: $id) @client
+  mutation toggleLikeMovie($id: Int!, $isLiked: Boolean!){
+    toggleLikeMovie(id: $id, isLiked: $isLiked) @client
   }
 `;
+// @client 표시를 함으로써 프론트엔드에 있는 것을 찾는다. 아니면 백엔드에 정의된 것을
+// 찾을 것이다.
 
 const Container = styled.div`
   height: 400px;
@@ -29,8 +31,8 @@ const Poster = styled.div`
 `;
 
 export default ({ id, bg, isLiked }) => {
-  const [likeMovie] = useMutation(LIKE_MOVIE, {
-    variables: { id: parseInt(id)
+  const [toggleMovie] = useMutation(LIKE_MOVIE, {
+    variables: { id: parseInt(id), isLiked
     }
   });
   return (
@@ -38,7 +40,7 @@ export default ({ id, bg, isLiked }) => {
     <Link to={`/${id}`}>
       <Poster bg={bg} />
     </Link>
-      <button onClick={isLiked ? null : likeMovie}>
+      <button onClick={toggleMovie}>
         {isLiked ? "Unlike" : "Like"}
       </button>
   </Container>

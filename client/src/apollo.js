@@ -7,12 +7,12 @@ const client = new ApolloClient({
       isLiked: () => false // Local State
     },
     Mutation: {
-      likeMovie: (_, { id}, {cache}) => { //function, 서버에 있는
+      toggleLikeMovie: (_, { id, isLiked}, {cache}) => { //function, 서버에 있는
         // graphql resolver와 같이 동작한다.
         cache.writeData({
           id: `Movie:${id}`,
           data: {
-            isLiked: true,
+            isLiked: !isLiked,
           }
         });
       }

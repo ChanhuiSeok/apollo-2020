@@ -7,11 +7,13 @@ import styled from "styled-components";
 const GET_MOVIE = gql`
   query getMovie($id:Int!){ # 이 부분은 for Apollo(변수 type 검사)
     movie(id: $id){ # 여기서부터는 실제 graphQL 서버에서 사용하는 쿼리
+      id
       title
       medium_cover_image
       language
       rating
       description_intro
+      isLiked @client
     }
     suggestions(id: $id){
       id
@@ -70,7 +72,7 @@ export default () => {
   return (
     <Container>
       <Column>
-        <Title>{loading? "Loading..." : data.movie.title}</Title>
+        <Title>{loading? "Loading..." : `${data.movie.title} ${data.movie.isLiked? "💗" : "👎"}`} </Title>
           <Subtitle>{data?.movie?.language} · {data?.movie?.rating}</Subtitle>
           <Description>{data?.movie?.description_intro}</Description>
       </Column>
